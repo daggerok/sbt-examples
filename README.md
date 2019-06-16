@@ -10,10 +10,13 @@ _table content in a reverse order_
 to quickly start new project, all you need to do is just:
 
 ```bash
-mkdir my-new-project
-cd my-new-project/
+mkdir hello-world
+cd hello-world
 . ../wrapper/sbt-wrapper
-./sbtw compile
+mkdir -p src/main/scala project
+echo 'object Main extends App { println("Hello") }' > src/main/scala/Main.scala
+echo 'sbt.version=1.2.8' > project/build.build.properties
+./sbtw run
 ```
 
 ## sbt wrapper

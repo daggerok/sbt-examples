@@ -47,7 +47,7 @@ jobs:
         - echo 'object Main extends App { println("Hello") }' > src/main/scala/Main.scala
         - echo 'sbt.version=1.2.8' > project/build.properties
         - ./sbtw compile
-        - ./sbtw run
+        - ./sbtw clean run
     - stage: openjdk8
       jdk: openjdk8
       name: test sbt wrapper
