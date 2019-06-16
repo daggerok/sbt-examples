@@ -1,0 +1,22 @@
+{
+  "name": "sbt-examples",
+  "version": "1.0.0",
+  "description": "Yes, I'm leaning...",
+  "main": "index.js",
+  "scripts": {
+    "start": "vuepress dev --port 5000 .",
+    "build": "vuepress build --no-cache .",
+    "test": "npm run build"
+  },
+  "keywords": [
+    "scala",
+    "sbt",
+    "simple build tool",
+    "simple build tool for jvm"
+  ],
+  "author": "Maksim Kostromin <daggerok@gmail.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "vuepress": "1.0.1"
+  }
+}
