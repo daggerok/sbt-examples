@@ -1,3 +1,0 @@
-#!/bin/bash
-curl -Ls https://git.io/sbt > ./sbtw && chmod 0755 ./sbtw
-
