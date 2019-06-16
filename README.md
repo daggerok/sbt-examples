@@ -1,7 +1,20 @@
 # sbt-examples
 Read documentation [here](https://daggerok.github.io/sbt-examples/) and learn baby, learn... GitHub Travis CI build status: [![Build Status](https://travis-ci.org/daggerok/sbt-examples.svg?branch=master)](https://travis-ci.org/daggerok/sbt-examples)
 
+_table content in a reverse order_
+
 [[toc]]
+
+## sbt getting-started
+
+to quickly start new project, all you need to do is just:
+
+```bash
+mkdir my-new-project
+cd my-new-project/
+. ../wrapper/sbt-wrapper
+./sbtw compile
+```
 
 ## sbt wrapper
 
