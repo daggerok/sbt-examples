@@ -12,6 +12,7 @@ install: true
 env:
   global:
     - TERM=dumb
+    - secure: MX59l79yxU/cOmLxKRxpFp6bwLmsaHWLDnPP0wZqy3SvSLwg7ugeJkaI/+BC6+WQD0mfexNeSC3ayGt7JSZ99uL2BDmCekEIt/3OxLHB5ojtiSA1Fb38JIfHIke9B2u/dEe3tmi4/Ycs8ey1+IPGKBE/JyoTEyyaPRTsbV23cgXV3ZwbO3++8+1fZCf1GqBk8zUn7IAHWSJSR1J4mz8S+2CiIfBV4B4QESuNtXpxEhfFdBTzkcAv0JsYHo4gFheoy2BFkPu+y/45hotwVdT1+flYKtPbIaJyr3g3XWyokNzGi2Jud8GVfMRzLX5NplojjhRLul+RH/gvB894lfLnWPafhjlT94KLim8nfR7qcxak8n05UCjKz2O54veBaOcT8AsTPBWsw/Jp+MnEhEV0kERzYf86hSWjV0Jvk+9GcfxF8HGgFZNJFP8H05q6mYVMKYcJRLvLHAnmztahD+Q0MPXnJlDwG6cbXcsncWFOa4ha56tI/l2YdpcEVlmsnrxUmIDSV7HrrIESoR+HtF94fzVq1+maVCynae1LS4YF5waXxY8Eqzqsz7QN9ejBqht8/r6zi9Hq4T6+Et3a7pPntiHSt01U1NVYYWWiqxTnyJ98HrazqccrwSyz2eThSwLvJ1lTsi6kQSFMjoSDLw4V1yBwWJcAB4zAGpZUhd85iYA=
 addons:
   apt:
     update: true
@@ -28,51 +29,41 @@ addons:
       - python3-setuptools
 before_install:
   - export PATH=$HOME/.local/bin:$PATH
-  - pip3 install --user $(whoami) --upgrade pip >/dev/null # pip3 -> pip
+  - pip3 install --user $(whoami) --upgrade pip >/dev/null
   - pip install --user $(whoami) --upgrade httpie >/dev/null 2>&1
   - http --version --debug
-  #
   - source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
   - stop_any 5432 5672 27017 8080 8000 8081 80 80
 jobs:
   include:
     - stage: openjdk8
       jdk: openjdk8
-      name: "maven tests"
-      before_script: for i in ${PROJECTS} ; do cp -Rfv $TRAVIS_BUILD_DIR/$i/src/test/resources/logback-maven.xml $TRAVIS_BUILD_DIR/$i/src/test/resources/logback.xml ; done
-      script: cd $TRAVIS_BUILD_DIR && ./mvnw clean test
-    - stage: openjdk8
-      jdk: openjdk8
-      name: "maven updates"
-      script: cd $TRAVIS_BUILD_DIR && ./mvnw versions:display-property-updates
-    - stage: openjdk8
-      jdk: openjdk8
-      name: "gradle tests"
-      before_script: for i in ${PROJECTS} ; do cp -Rfv $TRAVIS_BUILD_DIR/$i/src/test/resources/logback-gradle.xml $TRAVIS_BUILD_DIR/$i/src/test/resources/logback.xml ; done
-      script: cd $TRAVIS_BUILD_DIR && ./gradlew clean test
-    - stage: openjdk8
-      jdk: openjdk8
-      name: "gradle updates"
-      script: cd $TRAVIS_BUILD_DIR && ./gradlew dependencyUpdates -Drevision=release
-      after_script: cat $TRAVIS_BUILD_DIR/build/dependencyUpdates/report.txt
+      name: test sbt wrapper
+      script:
+        - cd $TRAVIS_BUILD_DIR/
+        - bash ./wrapper/sbt-wrapper
+        #- "./sbtw -sbt-create -batch -212"
+        - cat ./sbtw
 cache:
   directories:
-    - $TRAVIS_BUILD_DIR/node_modules
+    - "$TRAVIS_BUILD_DIR/node_modules"
     - node_modules
-    - ~/.gradle
-    - ~/.ivy
-    - ~/.sbt
-    - ~/.m2
+    - "~/.gradle"
+    - "~/.ivy"
+    - "~/.sbt"
+    - "~/.m2"
   pip: true
   npm: true
   packages: true
 before_deploy:
-  - npm i ; npm run gh-pages
+  - cd $TRAVIS_BUILD_DIR/
+  - npm i
+  - npm run gh-pages
 deploy:
   provider: pages
   skip-cleanup: true
-  local_dir: ./.vuepress/dist
-  github-token: $GITHUB_TOKEN
+  local_dir: ".vuepress/dist"
+  github-token: "$GITHUB_TOKEN"
   keep-history: true
   on:
     branch: master
