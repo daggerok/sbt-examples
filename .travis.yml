@@ -40,10 +40,10 @@ jobs:
       jdk: openjdk8
       name: test sbt wrapper
       script:
-        - cd $TRAVIS_BUILD_DIR/
+        - mkdir $TRAVIS_BUILD_DIR/test
+        - cd $TRAVIS_BUILD_DIR/test/
         - bash ./wrapper/sbt-wrapper
-        #- "./sbtw -sbt-create -batch -212"
-        - cat ./sbtw
+        - ./sbtw compile
 cache:
   directories:
     - "$TRAVIS_BUILD_DIR/node_modules"
