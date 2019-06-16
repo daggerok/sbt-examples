@@ -10,3 +10,6 @@ target/**
 *.ipr
 *.iws
 *.log*
+node_modules/
+.vuepress/dist/
+.cache/
