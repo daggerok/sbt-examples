@@ -42,7 +42,7 @@ jobs:
       script:
         - mkdir $TRAVIS_BUILD_DIR/test
         - cd $TRAVIS_BUILD_DIR/test/
-        - bash ./wrapper/sbt-wrapper
+        - bash $TRAVIS_BUILD_DIR/wrapper/sbt-wrapper
         - mkdir -p src/main/scala project
         - echo 'object Main extends App { println("Hello") }' > src/main/scala/Main.scala
         - echo 'sbt.version=1.2.8' > project/build.properties
