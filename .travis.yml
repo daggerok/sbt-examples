@@ -47,12 +47,15 @@ jobs:
         - echo 'object Main extends App { println("Hello") }' > src/main/scala/Main.scala
         - echo 'sbt.version=1.2.8' > project/build.properties
         - ./sbtw compile
+        - ./sbtw run
     - stage: openjdk8
       jdk: openjdk8
       name: test sbt wrapper
       script:
         - cd $TRAVIS_BUILD_DIR/hello-world/
-        - ./sbtw compile
+        - ./sbtw package
+        - ./sbtw test
+        - ./sbtw run
 cache:
   directories:
     - "$TRAVIS_BUILD_DIR/node_modules"
