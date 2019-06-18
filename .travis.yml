@@ -56,6 +56,13 @@ jobs:
         - ./sbtw package
         - ./sbtw test
         - ./sbtw run
+    - stage: openjdk8
+      jdk: openjdk8
+      name: test idea sbt project
+      script:
+        - cd $TRAVIS_BUILD_DIR/hello-world/
+        - ./sbtw test
+        - ./sbtw run
 cache:
   directories:
     - "$TRAVIS_BUILD_DIR/node_modules"

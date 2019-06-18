@@ -5,6 +5,14 @@ _table content in a reverse order_
 
 [[toc]]
 
+## idea-sbt project
+
+```bash
+cd ./idea-sbt/
+# TDD
+./sbtw ~test:test
+```
+
 ## sbt getting-started
 
 to quickly start new project, all you need to do is just:
