@@ -48,9 +48,13 @@ class MethodsNotationsTest extends FunSuite {
   test("should have apply notation") {
     class Person(name: String) {
       def apply() = s"Hey, I'm $name!"
+      def apply(times: Int, acc: String = ""): String =
+        if (times < 1) acc
+        else apply(times - 1, apply() + " " + acc)
     }
 
     val max = new Person("Max")
     assert("Hey, I'm Max!" == max())
+    assert("Hey, I'm Max! Hey, I'm Max! " == max(2))
   }
 }
