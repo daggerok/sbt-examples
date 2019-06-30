@@ -2,28 +2,28 @@ package com.github.daggerok.specs
 
 import org.scalatest.FlatSpec
 
-object MonadicList {
+object FunctionalList {
   trait MyList[+T] {
     def head: T
     def tail: MyList[T]
     def isEmpty: Boolean
     def +[S >: T](element: S): MyList[S]
-    def filter(myPredicate: MyPredicate[T]): MyList[T]
-    def map[S](transformer: MyTransformer[T, S]): MyList[S]
-    def flatMap[S](transformer: MyTransformer[T, MyList[S]]): MyList[S]
+    def filter(myPredicate: T => Boolean): MyList[T]
+    def map[S](transformer: T => S): MyList[S]
+    def flatMap[S](transformer: T => MyList[S]): MyList[S]
     def ++[S >: T](myList: MyList[S]): MyList[S]
     def concat[S >: T](myList: MyList[S]): MyList[S] = ++(myList)
     def toStringBuilder: String
     override def toString: String = s"MyList($toStringBuilder)"
   }
 
-  trait MyPredicate[-T] {
+  /*trait MyPredicate[-T] {
     def test(element: T): Boolean
   }
 
   trait MyTransformer[-T, S] {
     def map(element: T): S
-  }
+  }*/
 
   case object MyEmptyList extends MyList[Nothing] {
     override def head: Nothing = throw new NoSuchElementException
@@ -31,20 +31,11 @@ object MonadicList {
     override def isEmpty: Boolean = true
     override def +[S >: Nothing](element: S): MyList[S] = MyListNode(element, this)
     override def toStringBuilder: String = ""
-    override def filter(myPredicate: MyPredicate[Nothing]): MyList[Nothing] = MyEmptyList
-    override def map[S](transformer: MyTransformer[Nothing, S]): MyList[S] = MyEmptyList
+    override def filter(myPredicate: Nothing => Boolean): MyList[Nothing] = MyEmptyList
+    override def map[S](transformer: Nothing => S): MyList[S] = MyEmptyList
     override def ++[S >: Nothing](myList: MyList[S]): MyList[S] = myList
-    override def flatMap[S](transformer: MyTransformer[Nothing, MyList[S]]): MyList[S] = MyEmptyList
+    override def flatMap[S](transformer: Nothing => MyList[S]): MyList[S] = MyEmptyList
   }
-
-  //case object MyListNode {
-  //  def apply[T](i: Iterable[T]): MyList[T] = {
-  //    def loop(acc: MyList[T], iterator: Iterator[T]): MyList[T] =
-  //      if (iterator.isEmpty) acc
-  //     else loop(acc.add(iterator.next()), iterator)
-  //    loop(MyEmptyList, i.iterator)
-  //  }
-  //}
 
   case class MyListNode[+T](head: T, tail: MyList[T] = MyEmptyList) extends MyList[T] {
     override def isEmpty: Boolean = false
@@ -58,25 +49,25 @@ object MonadicList {
       loop(s"$head", tail)
     }
 
-    override def filter(myPredicate: MyPredicate[T]): MyList[T] =
-      if (myPredicate.test(head)) MyListNode(head, tail.filter(myPredicate))
+    override def filter(myPredicate: T => Boolean): MyList[T] =
+      if (myPredicate.apply(head)) MyListNode(head, tail.filter(myPredicate))
       else tail.filter(myPredicate)
 
-    override def map[S](transformer: MyTransformer[T, S]): MyList[S] =
-      MyListNode(transformer.map(head), tail.map(transformer))
+    override def map[S](transformer: T => S): MyList[S] =
+      MyListNode(transformer.apply(head), tail.map(transformer))
 
     override def ++[S >: T](myList: MyList[S]): MyList[S] =
       MyListNode(head, tail ++ myList)
 
-    override def flatMap[S](transformer: MyTransformer[T, MyList[S]]): MyList[S] =
-      transformer.map(head) ++ tail.flatMap(transformer)
+    override def flatMap[S](transformer: T => MyList[S]): MyList[S] =
+      transformer.apply(head) ++ tail.flatMap(transformer)
   }
 }
 
 /**
   * http://www.scalatest.org/user_guide/selecting_a_style
   */
-class MonadicListSpec extends FlatSpec {
+class FunctionalListSpec extends FlatSpec {
   import FunctionalList._
 
   it should "have an empty list" in {
@@ -121,7 +112,7 @@ class MonadicListSpec extends FlatSpec {
     println(s"concat: $concat")
   }
 
-  it should "have filter monadic operation" in {
+  it should "have filter functional monadic operation" in {
     val list = MyListNode(1, MyListNode(2, MyListNode(3, MyEmptyList)))
     val filtered = list.filter(_ % 2 == 0)
 
@@ -132,7 +123,7 @@ class MonadicListSpec extends FlatSpec {
     println(s"filtered: $filtered")
   }
 
-  it should "have map monadic operation" in {
+  it should "have map functional monadic operation" in {
     val list = MyListNode(1, MyListNode(2, MyListNode(3, MyEmptyList)))
     val transformed = list.map(_ + 1)
 
@@ -148,13 +139,14 @@ class MonadicListSpec extends FlatSpec {
     println(s"transformed: $transformed")
   }
 
-  it should "have flatMap monadic operation" in {
+  it should "have flatMap functional monadic operation" in {
     val list = MyListNode(3, MyListNode(2, MyListNode(1)))
-    val flatten = list.flatMap[Int](element =>
-      MyListNode(element - 1, MyListNode(element, MyListNode(element + 1))))
-    /*val flatten = list.flatMap(new MyTransformer[Int, MyList[Int]] {
-      override def map(element: Int): MyList[Int] = MyListNode(element - 1, MyListNode(element, MyListNode(element + 1)))
+    /*val flatten = list.flatMap(new Function1[Int, MyList[Int]] {
+      override def apply(element: Int): MyList[Int] = MyListNode(element - 1, MyListNode(element, MyListNode(element + 1)))
     })*/
+    //val flatten = list.flatMap((element: Int) => MyListNode(element - 1, MyListNode(element, MyListNode(element + 1))))
+    val flatten = list.flatMap(element =>
+      MyListNode(element - 1, MyListNode(element, MyListNode(element + 1))))
     println(s"flatten: $flatten")
   }
 }
