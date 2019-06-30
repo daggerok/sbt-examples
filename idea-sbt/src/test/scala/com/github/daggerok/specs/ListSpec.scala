@@ -23,10 +23,6 @@ object MyList {
     override def add[S >: T](element: S): MyList[S] = MyListNode(element, this)
     override def toString: String = s"MyList($head,$tail)"
   }
-
-  trait MyPredicate[-A, B]
-
-  trait MyTransformer[-T]
 }
 
 /**
