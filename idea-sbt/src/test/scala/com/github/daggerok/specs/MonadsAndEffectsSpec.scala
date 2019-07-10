@@ -2,7 +2,6 @@ package com.github.daggerok.specs
 
 import org.scalatest.FlatSpec
 
-import scala.collection.View.Empty
 import scala.util.{Failure, Random, Success, Try}
 
 /**
@@ -64,5 +63,15 @@ class MonadsAndEffectsSpec extends FlatSpec {
 
     assert(adventure.buyTreasure(List.empty).isFailure)
     assert(adventure.buyTreasure(List(new Coin)).isSuccess)
+
+    val maybeHappyPath = adventure.collectCoins
+      .flatMap(coins => adventure.buyTreasure(coins))
+    assert(maybeHappyPath.isSuccess || maybeHappyPath.isFailure)
+
+    val comprehensivePath = for {
+      coins <- adventure.collectCoins
+      treasure <- adventure.buyTreasure(coins)
+    } yield treasure
+    assert(comprehensivePath.isSuccess || comprehensivePath.isFailure)
   }
 }
