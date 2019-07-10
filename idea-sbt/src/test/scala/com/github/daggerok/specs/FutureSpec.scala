@@ -50,10 +50,8 @@ class FutureSpec extends FlatSpec {
   //        val retries = (0 to times).map(_ => () => block)
   //        val result = retries
   //          //.foldLeft(failure)((failed, blck) => () => { failed.recoverWith { blck() } })
-  //          .foldRight(failure)((blck, failed) => () => {
-  //                                                  blck() fallbackTo { failed }
-  //                                                })
-  //        result()
+  //          .foldRight(() => failure)((blck, failed) => () => { blck() fallbackTo { failed() } })
+  //        result ()
   //      }
   //    }
   //  }
