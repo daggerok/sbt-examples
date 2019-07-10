@@ -4,6 +4,7 @@ import org.scalatest.FlatSpec
 
 import scala.concurrent._
 import ExecutionContext.Implicits.global
+import scala.language.postfixOps
 import scala.concurrent.duration._
 
 /**
@@ -17,7 +18,7 @@ class FutureSpec extends FlatSpec {
 
   it should "do flatMap Future" in {
     val flatMappedFuture = name.flatMap(name => greetings(name))
-    val list = Await.result(flatMappedFuture, 1.seconds)
+    val list = Await.result(flatMappedFuture, 1 seconds)
     assert(list == List("Hola, Maksimko!"))
   }
 
@@ -29,7 +30,7 @@ class FutureSpec extends FlatSpec {
 
     forFuture.foreach(list => assert(list == List("Hola, Maksimko!")))
 
-    val list = Await.result(forFuture, 1.seconds)
+    val list = Await.result(forFuture, 1 seconds)
     assert(list == List("Hola, Maksimko!"))
   }
 }
