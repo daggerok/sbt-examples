@@ -7,7 +7,7 @@ import scala.util.{Failure, Random, Success, Try}
 /**
   * http://www.scalatest.org/user_guide/selecting_a_style
   */
-class MonadsAndEffectsSpec extends FlatSpec {
+class ExceptionAsAnEffectOrTryMonadSpec extends FlatSpec {
 
   it should "have old style blocking adventure game" in {
     class Coin
