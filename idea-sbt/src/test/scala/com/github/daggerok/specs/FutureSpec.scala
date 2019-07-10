@@ -4,7 +4,7 @@ import org.scalatest.FlatSpec
 
 import scala.concurrent._
 import ExecutionContext.Implicits.global
-import scala.util.{Failure, Success}
+import scala.concurrent.duration._
 
 /**
   * http://www.scalatest.org/user_guide/selecting_a_style
@@ -17,7 +17,8 @@ class FutureSpec extends FlatSpec {
 
   it should "do flatMap Future" in {
     val flatMappedFuture = name.flatMap(name => greetings(name))
-    flatMappedFuture.foreach(list => assert(list == List("Hola, Maksimko!")))
+    val list = Await.result(flatMappedFuture, 1.seconds)
+    assert(list == List("Hola, Maksimko!"))
   }
 
   it should "do for Future" in {
@@ -25,6 +26,10 @@ class FutureSpec extends FlatSpec {
       n <- name
       list <- greetings(n)
     } yield list
+
     forFuture.foreach(list => assert(list == List("Hola, Maksimko!")))
+
+    val list = Await.result(forFuture, 1.seconds)
+    assert(list == List("Hola, Maksimko!"))
   }
 }
