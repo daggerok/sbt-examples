@@ -38,6 +38,10 @@ jobs:
   include:
     - stage: openjdk8
       jdk: openjdk8
+      name: sbt run main-akka
+      script: cd $TRAVIS_BUILD_DIR/main-akka/ && ./sbtw clean run
+    - stage: openjdk8
+      jdk: openjdk8
       name: test sbt wrapper
       script:
         - mkdir $TRAVIS_BUILD_DIR/test

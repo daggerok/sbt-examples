@@ -1,0 +1,9 @@
+!project/assembly.sbt
+target/
+.idea/
+/out/
+*.iml
+*.ipr
+*.iws
+*.log*
+.DS_Store
