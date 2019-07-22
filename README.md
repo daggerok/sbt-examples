@@ -37,6 +37,10 @@ bash /path/to/wrapper/sbt-wrapper
 ./sbtw -v
 ```
 
+_other repositories_
+
+* [Akka Persistence | Scala | Jackson JSON Serialization | SBT GitHub: daggerok/akka-persistence-json-serializaer-example](https://github.com/daggerok/akka-persistence-json-serializaer-example)
+
 _resources_
 
 * [YouTube: A Simple Build Tool (SBT) video tutorial](https://www.youtube.com/watch?time_continue=41&v=LKkw140QmyU)
