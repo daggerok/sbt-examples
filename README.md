@@ -43,6 +43,7 @@ _other repositories_
 
 _resources_
 
+* [Intro: YouTube: Learn you an sbt for fun and profit!](https://www.youtube.com/watch?v=X6CnYQDL9Eg)
 * [YouTube: A Simple Build Tool (SBT) video tutorial](https://www.youtube.com/watch?time_continue=41&v=LKkw140QmyU)
 
 <!--
