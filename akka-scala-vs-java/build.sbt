@@ -1,26 +1,35 @@
 name := "akka-scala-vs-java"
 ThisBuild / version := "1.0.0-SNAPSHOT"
 ThisBuild / organization := "com.github.daggerok.akka"
+ThisBuild / licenses := Seq(("MIT", url("https://github.com/daggerok/sbt-examples/blob/master/LICENSE")))
+
 scalaVersion in ThisBuild := "2.13.0"
 libraryDependencies in ThisBuild ++= commonLibraryDependencies
-licenses in ThisBuild := Seq(("MIT", url("https://github.com/daggerok/sbt-examples/blob/master/LICENSE")))
+
+/* def projects, starts from root */
 
 lazy val root =
   (project in file("."))
-    .aggregate(
-      javaHello, javaStash, javaFSM,
-      scalaHello, scalaStash, scalaFSM,
-      scalaPersistenceCounter,
-    )
-    .dependsOn(
-      javaHello, javaStash, javaFSM,
-      scalaHello, scalaStash, scalaFSM,
-      scalaPersistenceCounter,
-    )
+    .aggregate(refs: _*)
+    .dependsOn(deps: _*)
     .settings(
       //commonSettings,
       update / aggregate := false,
     )
+
+/* DRY */
+
+lazy val deps: Array[ClasspathDep[ProjectReference]] =
+  refs.map(ClasspathDependency(_, Option.empty))
+
+lazy val refs = Array[ProjectReference](
+  javaHello, javaStash, javaFSM,
+  javaPersistenceCounter,
+  scalaHello, scalaStash, scalaFSM,
+  scalaPersistenceCounter,
+)
+
+/* def subProjects */
 
 lazy val javaHello =
   (project in file("java/hello"))
@@ -38,6 +47,13 @@ lazy val javaFSM =
   (project in file("java/fsm"))
     .settings(
       libraryDependencies ++= javaLibraryDependencies,
+    )
+
+lazy val javaPersistenceCounter =
+  (project in file("java/persistence/counter"))
+    .settings(
+      libraryDependencies ++= javaLibraryDependencies,
+      libraryDependencies ++= akkaPersistenceLibraryDependencies,
     )
 
 lazy val scalaPersistenceCounter =
@@ -59,11 +75,15 @@ lazy val scalaHello =
 //  //mainClass in (Compile, run) := Some("com.github.daggerok.akka.quickstart.AkkaQuickStart")
 //)
 
+/* def common settings */
+
 //lazy val commonSettings = Seq(
 //  scalaVersion := globalScalaVersion,
 //  organization := globalOrganization,
 //  version := globalVersion,
 //)
+
+/* def dependencies */
 
 lazy val akkaVersion = "2.6.0-M5"
 lazy val commonLibraryDependencies = Seq(
@@ -85,9 +105,9 @@ lazy val javaLibraryDependencies = Seq(
 
 //val jacksonVersion = "2.9.9"
 lazy val akkaPersistenceLibraryDependencies = Seq(
-  "com.typesafe.akka"            %% "akka-persistence"     % akkaVersion   ,
-  "org.iq80.leveldb"             %  "leveldb"              % "0.7"         ,
-  "org.fusesource.leveldbjni"    %  "leveldbjni-all"       % "1.8"         ,
+  "com.typesafe.akka" %% "akka-persistence" % akkaVersion,
+  "org.iq80.leveldb" % "leveldb" % "0.7",
+  "org.fusesource.leveldbjni" % "leveldbjni-all" % "1.8",
   //"com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonVersion,
   //"com.fasterxml.jackson.core"   %  "jackson-databind"     % jacksonVersion,
 )
