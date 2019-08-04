@@ -41,7 +41,7 @@ lazy val commonLibraryDependencies = Seq(
 
 lazy val vavrVersion = "0.10.2"
 lazy val lombokVersion = "1.18.8"
-lazy val slf4jVersion = "2.0.0-alpha0" // "1.7.26"
+lazy val slf4jVersion = "1.8.0-beta1" // "2.0.0-alpha0" // "1.7.26"
 lazy val logbackVersion = "1.3.0-alpha4" // "1.2.3"
 lazy val javaLibraryDependencies = Seq(
   "org.slf4j" % "slf4j-api" % slf4jVersion,
