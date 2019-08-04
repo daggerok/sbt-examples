@@ -5,7 +5,19 @@ _table content in a reverse order_
 
 [[toc]]
 
+## akka-scala-vs-java
+
+_run specific task from subproject_
+
+```bash
+cd ./akka-scala-vs-java/
+# TDD
+./sbtw ~test:test
+```
+
 ## idea-sbt project
+
+_watch task_
 
 ```bash
 cd ./idea-sbt/
@@ -15,7 +27,7 @@ cd ./idea-sbt/
 
 ## sbt getting-started
 
-to quickly start new project, all you need to do is just:
+_new sbt project quickly start_
 
 ```bash
 mkdir hello-world
@@ -28,6 +40,14 @@ echo 'sbt.version=1.2.8' > project/build.build.properties
 ```
 
 ## sbt wrapper
+
+_sbt wrapper_
+
+```bash
+cat ~/.bin/sbt-wrapper
+#!/bin/bash
+curl -Ls https://git.io/sbt > ./sbtw && chmod 0755 ./sbtw
+```
 
 to quickly add an sbt wrapper to your project, use `./wrapper/sbt-wrapper` script like so:
 
