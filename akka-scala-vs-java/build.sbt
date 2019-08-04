@@ -6,8 +6,14 @@ libraryDependencies in ThisBuild ++= commonLibraryDependencies
 
 lazy val root =
   (project in file("."))
-    .aggregate(javaHello, javaStash, scalaHello, scalaStash, scalaFSM)
-    .dependsOn(javaHello, javaStash, scalaHello, scalaStash, scalaFSM)
+    .aggregate(
+      javaHello, javaStash, javaFSM,
+      scalaHello, scalaStash, scalaFSM,
+    )
+    .dependsOn(
+      javaHello, javaStash, javaFSM,
+      scalaHello, scalaStash, scalaFSM,
+    )
     .settings(
       //commonSettings,
       update / aggregate := false,
@@ -21,6 +27,12 @@ lazy val javaHello =
 
 lazy val javaStash =
   (project in file("java/stash"))
+    .settings(
+      libraryDependencies ++= javaLibraryDependencies,
+    )
+
+lazy val javaFSM =
+  (project in file("java/fsm"))
     .settings(
       libraryDependencies ++= javaLibraryDependencies,
     )
@@ -51,7 +63,7 @@ lazy val commonLibraryDependencies = Seq(
   "org.scalatest" %% "scalatest" % "3.0.8" % "test",
 )
 
-lazy val vavrVersion = "0.10.2"
+//lazy val vavrVersion = "0.10.2"
 lazy val lombokVersion = "1.18.8"
 lazy val slf4jVersion = "1.8.0-beta1" // "2.0.0-alpha0" // "1.7.26"
 lazy val logbackVersion = "1.3.0-alpha4" // "1.2.3"
@@ -59,5 +71,5 @@ lazy val javaLibraryDependencies = Seq(
   "org.slf4j" % "slf4j-api" % slf4jVersion,
   "ch.qos.logback" % "logback-classic" % logbackVersion,
   "org.projectlombok" % "lombok" % lombokVersion,
-  "io.vavr" % "vavr" % vavrVersion,
+  //"io.vavr" % "vavr" % vavrVersion,
 )
