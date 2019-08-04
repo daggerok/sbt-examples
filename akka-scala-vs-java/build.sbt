@@ -3,16 +3,19 @@ ThisBuild / version := "1.0.0-SNAPSHOT"
 ThisBuild / organization := "com.github.daggerok.akka"
 scalaVersion in ThisBuild := "2.13.0"
 libraryDependencies in ThisBuild ++= commonLibraryDependencies
+licenses in ThisBuild := Seq(("MIT", url("https://github.com/daggerok/sbt-examples/blob/master/LICENSE")))
 
 lazy val root =
   (project in file("."))
     .aggregate(
       javaHello, javaStash, javaFSM,
       scalaHello, scalaStash, scalaFSM,
+      scalaPersistenceCounter,
     )
     .dependsOn(
       javaHello, javaStash, javaFSM,
       scalaHello, scalaStash, scalaFSM,
+      scalaPersistenceCounter,
     )
     .settings(
       //commonSettings,
@@ -35,6 +38,12 @@ lazy val javaFSM =
   (project in file("java/fsm"))
     .settings(
       libraryDependencies ++= javaLibraryDependencies,
+    )
+
+lazy val scalaPersistenceCounter =
+  (project in file("scala/persistence/counter"))
+    .settings(
+      libraryDependencies ++= akkaPersistenceLibraryDependencies,
     )
 
 lazy val scalaFSM =
@@ -72,4 +81,13 @@ lazy val javaLibraryDependencies = Seq(
   "ch.qos.logback" % "logback-classic" % logbackVersion,
   "org.projectlombok" % "lombok" % lombokVersion,
   //"io.vavr" % "vavr" % vavrVersion,
+)
+
+//val jacksonVersion = "2.9.9"
+lazy val akkaPersistenceLibraryDependencies = Seq(
+  "com.typesafe.akka"            %% "akka-persistence"     % akkaVersion   ,
+  "org.iq80.leveldb"             %  "leveldb"              % "0.7"         ,
+  "org.fusesource.leveldbjni"    %  "leveldbjni-all"       % "1.8"         ,
+  //"com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonVersion,
+  //"com.fasterxml.jackson.core"   %  "jackson-databind"     % jacksonVersion,
 )
