@@ -19,15 +19,15 @@ lazy val root =
 
 /* DRY */
 
-lazy val deps: Array[ClasspathDep[ProjectReference]] =
-  refs.map(ClasspathDependency(_, Option.empty))
-
 lazy val refs = Array[ProjectReference](
   javaHello, javaStash, javaFSM,
   javaPersistenceCounter,
   scalaHello, scalaStash, scalaFSM,
   scalaPersistenceCounter,
 )
+
+lazy val deps: Array[ClasspathDep[ProjectReference]] =
+  refs.map(ClasspathDependency(_, Option.empty))
 
 /* def subProjects */
 
