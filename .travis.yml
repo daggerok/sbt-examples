@@ -11,145 +11,150 @@ node_js: lts/*
 install: true
 env:
   global:
-    - TERM=dumb
-    - secure: MX59l79yxU/cOmLxKRxpFp6bwLmsaHWLDnPP0wZqy3SvSLwg7ugeJkaI/+BC6+WQD0mfexNeSC3ayGt7JSZ99uL2BDmCekEIt/3OxLHB5ojtiSA1Fb38JIfHIke9B2u/dEe3tmi4/Ycs8ey1+IPGKBE/JyoTEyyaPRTsbV23cgXV3ZwbO3++8+1fZCf1GqBk8zUn7IAHWSJSR1J4mz8S+2CiIfBV4B4QESuNtXpxEhfFdBTzkcAv0JsYHo4gFheoy2BFkPu+y/45hotwVdT1+flYKtPbIaJyr3g3XWyokNzGi2Jud8GVfMRzLX5NplojjhRLul+RH/gvB894lfLnWPafhjlT94KLim8nfR7qcxak8n05UCjKz2O54veBaOcT8AsTPBWsw/Jp+MnEhEV0kERzYf86hSWjV0Jvk+9GcfxF8HGgFZNJFP8H05q6mYVMKYcJRLvLHAnmztahD+Q0MPXnJlDwG6cbXcsncWFOa4ha56tI/l2YdpcEVlmsnrxUmIDSV7HrrIESoR+HtF94fzVq1+maVCynae1LS4YF5waXxY8Eqzqsz7QN9ejBqht8/r6zi9Hq4T6+Et3a7pPntiHSt01U1NVYYWWiqxTnyJ98HrazqccrwSyz2eThSwLvJ1lTsi6kQSFMjoSDLw4V1yBwWJcAB4zAGpZUhd85iYA=
+  - TERM=dumb
+  - secure: MX59l79yxU/cOmLxKRxpFp6bwLmsaHWLDnPP0wZqy3SvSLwg7ugeJkaI/+BC6+WQD0mfexNeSC3ayGt7JSZ99uL2BDmCekEIt/3OxLHB5ojtiSA1Fb38JIfHIke9B2u/dEe3tmi4/Ycs8ey1+IPGKBE/JyoTEyyaPRTsbV23cgXV3ZwbO3++8+1fZCf1GqBk8zUn7IAHWSJSR1J4mz8S+2CiIfBV4B4QESuNtXpxEhfFdBTzkcAv0JsYHo4gFheoy2BFkPu+y/45hotwVdT1+flYKtPbIaJyr3g3XWyokNzGi2Jud8GVfMRzLX5NplojjhRLul+RH/gvB894lfLnWPafhjlT94KLim8nfR7qcxak8n05UCjKz2O54veBaOcT8AsTPBWsw/Jp+MnEhEV0kERzYf86hSWjV0Jvk+9GcfxF8HGgFZNJFP8H05q6mYVMKYcJRLvLHAnmztahD+Q0MPXnJlDwG6cbXcsncWFOa4ha56tI/l2YdpcEVlmsnrxUmIDSV7HrrIESoR+HtF94fzVq1+maVCynae1LS4YF5waXxY8Eqzqsz7QN9ejBqht8/r6zi9Hq4T6+Et3a7pPntiHSt01U1NVYYWWiqxTnyJ98HrazqccrwSyz2eThSwLvJ1lTsi6kQSFMjoSDLw4V1yBwWJcAB4zAGpZUhd85iYA=
 addons:
   apt:
     update: true
     packages:
-      - jq
-      - sudo
-      - lsof
-      - wget
-      - bash
-      - curl
-      - python3-dev
-      - python3-pip
-      - python3-six
-      - python3-setuptools
+    - jq
+    - sudo
+    - lsof
+    - wget
+    - bash
+    - curl
+    - python3-dev
+    - python3-pip
+    - python3-six
+    - python3-setuptools
 before_install:
-  - export PATH=$HOME/.local/bin:$PATH
-  - pip3 install --user $(whoami) --upgrade pip >/dev/null
-  - pip install --user $(whoami) --upgrade httpie >/dev/null 2>&1
-  - http --version --debug
-  - source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
-  - stop_any 5432 5672 27017 8080 8000 8081 80 80
+- export PATH=$HOME/.local/bin:$PATH
+- pip3 install --user $(whoami) --upgrade pip >/dev/null
+- pip install --user $(whoami) --upgrade httpie >/dev/null 2>&1
+- http --version --debug
+- source <(curl -fsSL https://raw.github.com/daggerok/bash-functions/master/main.bash)
+- stop_any 5432 5672 27017 8080 8000 8081 80 80
 stages:
-  - test
-  - deploy
+- test
+- deploy
 jobs:
   include:
-    - stage: test
-      jdk: openjdk8
-      name: sbt run main-akka
-      script: cd $TRAVIS_BUILD_DIR/main-akka/ && ./sbtw clean run
-    - stage: test
-      jdk: openjdk8
-      name: test sbt wrapper
-      script:
-        - mkdir $TRAVIS_BUILD_DIR/test
-        - cd $TRAVIS_BUILD_DIR/test/
-        - bash $TRAVIS_BUILD_DIR/wrapper/sbt-wrapper
-        - mkdir -p src/main/scala project
-        - echo 'object Main extends App { println("Hello") }' > src/main/scala/Main.scala
-        - echo 'sbt.version=1.2.8' > project/build.properties
-        - ./sbtw compile
-        - ./sbtw clean run
-    - stage: test
-      jdk: openjdk8
-      name: test sbt wrapper
-      script:
-        - cd $TRAVIS_BUILD_DIR/hello-world/
-        - ./sbtw package
-        - ./sbtw test
-        - ./sbtw run
-    - stage: test
-      jdk: openjdk8
-      name: test idea sbt project
-      script:
-        - cd $TRAVIS_BUILD_DIR/hello-world/
-        - ./sbtw test
-        - ./sbtw run
-    - stage: test
-      jdk: openjdk8
-      name: test akka-scala-vs-java scalaHello
-      script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project scalaHello" clean test run
-    - stage: test
-      jdk: openjdk8
-      name: test akka-scala-vs-java javaHello
-      script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project javaHello" clean test package run
-    #
-    - stage: test
-      jdk: openjdk11
-      name: sbt run main-akka openjdk11
-      script: cd $TRAVIS_BUILD_DIR/main-akka/ && ./sbtw clean run
-    - stage: test
-      jdk: openjdk11
-      name: test sbt wrapper openjdk11
-      script:
-        - mkdir $TRAVIS_BUILD_DIR/test
-        - cd $TRAVIS_BUILD_DIR/test/
-        - bash $TRAVIS_BUILD_DIR/wrapper/sbt-wrapper
-        - mkdir -p src/main/scala project
-        - echo 'object Main extends App { println("Hello") }' > src/main/scala/Main.scala
-        - echo 'sbt.version=1.2.8' > project/build.properties
-        - ./sbtw compile
-        - ./sbtw clean run
-    - stage: test
-      jdk: openjdk11
-      name: test sbt wrapper openjdk11
-      script:
-        - cd $TRAVIS_BUILD_DIR/hello-world/
-        - ./sbtw package
-        - ./sbtw test
-        - ./sbtw run
-    - stage: test
-      jdk: openjdk11
-      name: test idea sbt project openjdk11
-      script:
-        - cd $TRAVIS_BUILD_DIR/hello-world/
-        - ./sbtw test
-        - ./sbtw run
-    - stage: test
-      jdk: openjdk11
-      name: test akka-scala-vs-java scalaHello openjdk11
-      script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project scalaHello" clean test run
-    - stage: test
-      jdk: openjdk11
-      name: test akka-scala-vs-java javaHello openjdk11
-      script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project javaHello" clean test package run
-    #
-    - stage: deploy
-      #jdk: openjdk8
-      jdk: openjdk11
-      name: GitHub release and GitHub pages deployment (openjdk11)
-      script: skip
-      if: branch = "master" AND type NOT IN (pull_request)
-      before_deploy:
-        - if [ "$TRAVIS_PULL_REQUEST" != "false" ] || [ ".$TRAVIS_BRANCH" != ".master" ] ; then exit 0 ; fi
-        - env
-        # documentation
-        - cd $TRAVIS_BUILD_DIR/
-        - npm i
-        - npm run gh-pages
-      deploy: &pages
-        provider: pages
-        skip-cleanup: true
-        keep-history: true
-        target_branch: gh-pages
-        local_dir: ".vuepress/dist"
-        github-token: "$GITHUB_TOKEN"
-        on:
-          branch: master
-          condition: "$TRAVIS_PULL_REQUEST = false"
+#    - stage: test
+#      jdk: openjdk8
+#      name: sbt run main-akka
+#      script: cd $TRAVIS_BUILD_DIR/main-akka/ && ./sbtw clean run
+#    - stage: test
+#      jdk: openjdk8
+#      name: test sbt wrapper
+#      script:
+#        - mkdir $TRAVIS_BUILD_DIR/test
+#        - cd $TRAVIS_BUILD_DIR/test/
+#        - bash $TRAVIS_BUILD_DIR/wrapper/sbt-wrapper
+#        - mkdir -p src/main/scala project
+#        - echo 'object Main extends App { println("Hello") }' > src/main/scala/Main.scala
+#        - echo 'sbt.version=1.2.8' > project/build.properties
+#        - ./sbtw compile
+#        - ./sbtw clean run
+#    - stage: test
+#      jdk: openjdk8
+#      name: test sbt wrapper
+#      script:
+#        - cd $TRAVIS_BUILD_DIR/hello-world/
+#        - ./sbtw package
+#        - ./sbtw test
+#        - ./sbtw run
+#    - stage: test
+#      jdk: openjdk8
+#      name: test idea sbt project
+#      script:
+#        - cd $TRAVIS_BUILD_DIR/hello-world/
+#        - ./sbtw test
+#        - ./sbtw run
+#    - stage: test
+#      jdk: openjdk8
+#      name: test akka-scala-vs-java scalaHello
+#      script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project scalaHello" clean test run
+#    - stage: test
+#      jdk: openjdk8
+#      name: test akka-scala-vs-java javaHello
+#      script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project javaHello" clean test package run
+#    #
+  - stage: test
+    jdk: openjdk11
+    name: sbt run main-akka openjdk11
+    script: cd $TRAVIS_BUILD_DIR/main-akka/ && ./sbtw clean run
+  - stage: test
+    jdk: openjdk11
+    name: test sbt wrapper openjdk11
+    script:
+    - mkdir $TRAVIS_BUILD_DIR/test
+    - cd $TRAVIS_BUILD_DIR/test/
+    - bash $TRAVIS_BUILD_DIR/wrapper/sbt-wrapper
+    - mkdir -p src/main/scala project
+    - echo 'object Main extends App { println("Hello") }' > src/main/scala/Main.scala
+    - echo 'sbt.version=1.2.8' > project/build.properties
+    - ./sbtw compile
+    - ./sbtw clean run
+  - stage: test
+    jdk: openjdk11
+    name: test sbt wrapper openjdk11
+    script:
+    - cd $TRAVIS_BUILD_DIR/hello-world/
+    - ./sbtw package
+    - ./sbtw test
+    - ./sbtw run
+  - stage: test
+    jdk: openjdk11
+    name: test idea sbt project openjdk11
+    script:
+    - cd $TRAVIS_BUILD_DIR/hello-world/
+    - ./sbtw test
+    - ./sbtw run
+  #
+  - stage: test
+    jdk: openjdk11
+    name: test akka-scala-vs-java scalaHello openjdk11
+    script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project scalaHello" clean test run
+  - stage: test
+    jdk: openjdk11
+    name: test akka-scala-vs-java javaHello openjdk11
+    script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project javaHello" clean test package run
+  - stage: test
+    jdk: openjdk11
+    name: test akka-scala-vs-java javaHello openjdk11
+    script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project scalaStash" clean run
+  #
+  - stage: deploy
+    #jdk: openjdk8
+    jdk: openjdk11
+    name: GitHub release and GitHub pages deployment (openjdk11)
+    script: skip
+    if: branch = "master" AND type NOT IN (pull_request)
+    before_deploy:
+    - if [ "$TRAVIS_PULL_REQUEST" != "false" ] || [ ".$TRAVIS_BRANCH" != ".master" ] ; then exit 0 ; fi
+    - env
+    # documentation
+    - cd $TRAVIS_BUILD_DIR/
+    - npm i
+    - npm run gh-pages
+    deploy: &pages
+      provider: pages
+      skip-cleanup: true
+      keep-history: true
+      target_branch: gh-pages
+      local_dir: ".vuepress/dist"
+      github-token: "$GITHUB_TOKEN"
+      on:
+        branch: master
+        condition: "$TRAVIS_PULL_REQUEST = false"
 cache:
   pip: true
   npm: true
   packages: true
   directories:
-    - "$TRAVIS_BUILD_DIR/node_modules"
-    - node_modules
-    - "~/.gradle"
-    - "~/.ivy"
-    - "~/.sbt"
-    - "~/.m2"
+  - "$TRAVIS_BUILD_DIR/node_modules"
+  - node_modules
+  - "~/.gradle"
+  - "~/.ivy"
+  - "~/.sbt"
+  - "~/.m2"

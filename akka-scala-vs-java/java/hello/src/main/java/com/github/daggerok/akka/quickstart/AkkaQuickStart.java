@@ -15,7 +15,8 @@ final class WhoToGreet {
     private final String who;
 }
 
-final class Greet { }
+final class Greet {
+}
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,15 +35,13 @@ class Greeter extends AbstractActor {
 
     private Receive withWhomToGreet(String name) {
         return receiveBuilder()
-                .match(WhoToGreet.class, whoToGreet -> {
-                    getContext().become(withWhomToGreet(whoToGreet.getWho()));
+                .match(WhoToGreet.class,
+                       whoToGreet -> getContext().become(withWhomToGreet(whoToGreet.getWho())))
+                .match(Greet.class, greet -> {
+                    String msg = format("Hola, %s", name);
+                    log.info("sending {} to {}", msg, printer);
+                    printer.tell(Greeting.of(msg), self());
                 })
-                .match(Greet.class,
-                       greet -> {
-                           String msg = format("Hola, %s", name);
-                           log.info("sending {} to {}", msg, printer);
-                           printer.tell(Greeting.of(msg), self());
-                       })
                 .matchAny(o -> {
                     log.error("unexpected: {}", o);
                     unhandled(o);
