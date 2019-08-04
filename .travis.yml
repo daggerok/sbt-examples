@@ -121,15 +121,15 @@ jobs:
     script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project javaHello" clean test package run
   - stage: test
     jdk: openjdk11
-    name: test akka-scala-vs-java javaHello openjdk11
+    name: test akka-scala-vs-java scalaStash openjdk11
     script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project scalaStash" clean run
   - stage: test
     jdk: openjdk11
-    name: test akka-scala-vs-java javaHello openjdk11
+    name: test akka-scala-vs-java javaStash openjdk11
     script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project javaStash" clean run
   - stage: test
     jdk: openjdk11
-    name: test akka-scala-vs-java javaHello openjdk11
+    name: test akka-scala-vs-java scalaFSM openjdk11
     script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project scalaFSM" clean run
   #
   - stage: deploy
