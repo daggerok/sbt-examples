@@ -6,8 +6,8 @@ libraryDependencies in ThisBuild ++= commonLibraryDependencies
 
 lazy val root =
   (project in file("."))
-    .aggregate(javaHello, javaStash, scalaHello, scalaStash)
-    .dependsOn(javaHello, javaStash, scalaHello, scalaStash)
+    .aggregate(javaHello, javaStash, scalaHello, scalaStash, scalaFSM)
+    .dependsOn(javaHello, javaStash, scalaHello, scalaStash, scalaFSM)
     .settings(
       //commonSettings,
       update / aggregate := false,
@@ -24,6 +24,9 @@ lazy val javaStash =
     .settings(
       libraryDependencies ++= javaLibraryDependencies,
     )
+
+lazy val scalaFSM =
+  (project in file("scala/fsm"))
 
 lazy val scalaStash =
   (project in file("scala/stash"))

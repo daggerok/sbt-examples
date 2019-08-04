@@ -127,6 +127,10 @@ jobs:
     jdk: openjdk11
     name: test akka-scala-vs-java javaHello openjdk11
     script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project javaStash" clean run
+  - stage: test
+    jdk: openjdk11
+    name: test akka-scala-vs-java javaHello openjdk11
+    script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project scalaFSM" clean run
   #
   - stage: deploy
     #jdk: openjdk8
