@@ -4,7 +4,6 @@ import akka.actor.AbstractFSMWithStash;
 import akka.actor.ActorRef;
 import akka.actor.ActorSystem;
 import akka.actor.Props;
-import akka.japi.pf.FSMStateFunctionBuilder;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
@@ -55,13 +54,13 @@ final class Delete implements DbOperations {
 @Slf4j
 class FiniteStateMachineUserRepositoryActor extends AbstractFSMWithStash<State, Data> {
 
-    @Override
-    public void postStop() {
-        // hz, but it's requires for compile...
-    }
-
     static Props props() {
         return Props.create(FiniteStateMachineUserRepositoryActor.class);
+    }
+
+    @Override
+    public void postStop() {
+        // hz, but it's requires for success compilation...
     }
 
     {
@@ -73,11 +72,11 @@ class FiniteStateMachineUserRepositoryActor extends AbstractFSMWithStash<State, 
                  unstashAll();
                  return goTo(Connected)/*.using(Empty)*/;
              })
-             .anyEvent((o, data) -> {
-                 log.info("received a message when disconnected!");
-                 stash();
-                 return stay();
-             }));
+                     .anyEvent((o, data) -> {
+                         log.info("received a message when disconnected!");
+                         stash();
+                         return stay();
+                     }));
 
         /* // optionals:
         onTransition(
@@ -96,11 +95,11 @@ class FiniteStateMachineUserRepositoryActor extends AbstractFSMWithStash<State, 
                  getContext().unbecome();
                  return goTo(Disconnected)/*.using(Empty)*/;
              })
-             .event(DbOperations.class, (dbOperations, data) -> {
-                 log.info("received: {}", dbOperations);
-                 return stay();
-             })
-             .build());
+                     .event(DbOperations.class, (dbOperations, data) -> {
+                         log.info("received: {}", dbOperations);
+                         return stay();
+                     })
+                     .build());
 
         whenUnhandled(
                 matchAnyEvent((o, data) -> {
@@ -108,13 +107,7 @@ class FiniteStateMachineUserRepositoryActor extends AbstractFSMWithStash<State, 
                     unhandled(o);
                     return stay()/*.using(Empty)*/;
                 })
-                .build());
-
-        // when(Disconnected,
-        //      // matchEvent(Network.class, EmptyData.class, );
-        //      matchEventEquals(Connected, Empty, () -> {
-        //          return goTo(Connected).using(Empty);
-        //      }));
+                        .build());
 
         initialize();
     }
