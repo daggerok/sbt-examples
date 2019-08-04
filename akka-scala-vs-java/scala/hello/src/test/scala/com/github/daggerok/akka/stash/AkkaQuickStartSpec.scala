@@ -1,10 +1,12 @@
-package com.github.daggerok.akka.quickstart
+package com.github.daggerok.akka.stash
 
 import org.scalatest.{ BeforeAndAfterAll, WordSpecLike, Matchers }
 import akka.actor.ActorSystem
 import akka.testkit.{ TestKit, TestProbe }
 import scala.concurrent.duration._
 import scala.language.postfixOps
+import Greeter._
+import Printer._
 
 class AkkaQuickStartSpec(_system: ActorSystem)
   extends TestKit(_system)
@@ -21,14 +23,13 @@ class AkkaQuickStartSpec(_system: ActorSystem)
   "A Greeter Actor" should {
     "pass on a greeting message when instructed to" in {
       val testProbe = TestProbe()
-      val helloGreeter = system.actorOf(Greeter.props(testProbe.ref))
-      val name = "Akka"
+      val helloGreetingMessage = "hello"
+      val helloGreeter = system.actorOf(Greeter.props(helloGreetingMessage, testProbe.ref))
+      val greetPerson = "Akka"
 
-      helloGreeter ! WhoToGreet.of(name)
-      testProbe.expectNoMessage(500 millis)
-
-      helloGreeter ! new Greet
-      testProbe.expectMsg(500 millis, Greeting.of(s"Hola, $name"))
+      helloGreeter ! WhoToGreet(greetPerson)
+      helloGreeter ! Greet
+      testProbe.expectMsg(500 millis, Greeting(helloGreetingMessage + ", " + greetPerson))
     }
   }
 }

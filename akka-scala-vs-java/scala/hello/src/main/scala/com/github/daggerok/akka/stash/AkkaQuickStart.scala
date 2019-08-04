@@ -1,4 +1,4 @@
-package com.github.daggerok.akka.quickstart
+package com.github.daggerok.akka.stash
 
 import akka.actor.{Actor, ActorLogging, ActorRef, ActorSystem, Props}
 
