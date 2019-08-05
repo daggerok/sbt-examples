@@ -52,8 +52,7 @@ lazy val javaFSM =
 lazy val javaPersistenceCounter =
   (project in file("java/persistence/counter"))
     .settings(
-      libraryDependencies ++= javaLibraryDependencies,
-      libraryDependencies ++= akkaPersistenceLibraryDependencies,
+      libraryDependencies ++= javaAkkaPersistenceLibraryDependencies,
     )
 
 lazy val scalaPersistenceCounter =
@@ -92,7 +91,6 @@ lazy val commonLibraryDependencies = Seq(
   "org.scalatest" %% "scalatest" % "3.0.8" % "test",
 )
 
-//lazy val vavrVersion = "0.10.2"
 lazy val lombokVersion = "1.18.8"
 lazy val slf4jVersion = "1.8.0-beta1" // "2.0.0-alpha0" // "1.7.26"
 lazy val logbackVersion = "1.3.0-alpha4" // "1.2.3"
@@ -111,3 +109,16 @@ lazy val akkaPersistenceLibraryDependencies = Seq(
   //"com.fasterxml.jackson.module" %% "jackson-module-scala" % jacksonVersion,
   //"com.fasterxml.jackson.core"   %  "jackson-databind"     % jacksonVersion,
 )
+
+lazy val vavrVersion = "0.10.2"
+lazy val javaAkkaPersistenceLibraryDependencies =
+  javaLibraryDependencies ++
+    akkaPersistenceLibraryDependencies ++
+    Seq("io.vavr" % "vavr" % vavrVersion)
+
+//lazy val myTask = taskKey[Unit]("my task")
+//
+//myTask := {
+//  val comb = akkaPersistenceLibraryDependencies ++ javaLibraryDependencies
+//  println(comb)
+//}

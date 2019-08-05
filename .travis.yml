@@ -137,8 +137,12 @@ jobs:
     script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project javaFSM" clean run
   - stage: test
     jdk: openjdk11
-    name: test akka-scala-vs-java javaFSM openjdk11
+    name: test akka-scala-vs-java scalaPersistenceCounter openjdk11
     script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project scalaPersistenceCounter" clean run
+  - stage: test
+    jdk: openjdk11
+    name: test akka-scala-vs-java javaPersistenceCounter openjdk11
+    script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project javaPersistenceCounter" clean run
   #
   - stage: deploy
     #jdk: openjdk8
