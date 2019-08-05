@@ -12,7 +12,7 @@ _run specific task from subproject_
 ```bash
 cd ./akka-scala-vs-java/
 # TDD
-./sbtw ~test:test
+./sbtw "project javaPersistenceCounter" clean run
 ```
 
 ## idea-sbt project
@@ -66,6 +66,7 @@ _resources_
 * [YouTube: A Simple Build Tool (SBT) video tutorial](https://www.youtube.com/watch?time_continue=41&v=LKkw140QmyU)
 * [A simple Intro](https://www.youtube.com/watch?v=DxrLPZD1Hxw)
 * [More complicated Intro: YouTube: Learn you an sbt for fun and profit!](https://www.youtube.com/watch?v=X6CnYQDL9Eg)
+* [Akka Persistence Java API](https://doc.akka.io/docs/akka/2.5/persistence.html)
 
 <!--
 * [YouTube: Functional Programming Principles in Scala](https://www.youtube.com/channel/UC606CODOUaA3-E5LcC5yKAQ)
