@@ -24,6 +24,7 @@ lazy val refs = Array[ProjectReference](
   javaPersistenceCounter,
   scalaHello, scalaStash, scalaFSM,
   scalaPersistenceCounter,
+  scalaPersistenceFSM,
 )
 
 lazy val deps: Array[ClasspathDep[ProjectReference]] =
@@ -53,6 +54,12 @@ lazy val javaPersistenceCounter =
   (project in file("java/persistence/counter"))
     .settings(
       libraryDependencies ++= javaAkkaPersistenceLibraryDependencies,
+    )
+
+lazy val scalaPersistenceFSM =
+  (project in file("scala/persistence/fsm"))
+    .settings(
+      libraryDependencies ++= akkaPersistenceLibraryDependencies,
     )
 
 lazy val scalaPersistenceCounter =
