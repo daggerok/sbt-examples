@@ -25,4 +25,5 @@ import akka.actor.typed.scaladsl._
 
 links:
 
-* [Akka reference](https://doc.akka.io/docs/akka/current/typed/guide/tutorial_1.html)
+* [Akka typed reference](https://doc.akka.io/docs/akka/current/typed/guide/tutorial_1.html)
+* [Typed akka Java example](https://doc.akka.io/docs/akka/current/typed/actor-lifecycle.html)
