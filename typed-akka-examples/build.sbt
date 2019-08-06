@@ -50,6 +50,7 @@ lazy val root =
 /* DRY */
 
 lazy val refs = Array[ProjectReference](
+  scalaAccount,
   scalaHello,
   javaHello,
   javaHola,
@@ -59,6 +60,9 @@ lazy val deps: Array[ClasspathDep[ProjectReference]] =
   refs.map(ClasspathDependency(_, Option.empty))
 
 /* def subProjects */
+
+lazy val scalaAccount =
+  (project in file("scala/account"))
 
 lazy val scalaHello =
   (project in file("scala/hello"))

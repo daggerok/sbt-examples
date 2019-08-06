@@ -27,3 +27,4 @@ links:
 
 * [Akka typed reference](https://doc.akka.io/docs/akka/current/typed/guide/tutorial_1.html)
 * [Typed akka Java example](https://doc.akka.io/docs/akka/current/typed/actor-lifecycle.html)
+* [YouTube: Farewell Any - Unit, welcome Akka Typed! by Heiko Seeberger](https://www.youtube.com/watch?v=YW2wiBERKH8)

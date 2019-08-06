@@ -41,6 +41,10 @@ jobs:
   include:
   - stage: test
     jdk: openjdk8
+    name: test typed-akka-examples scalaAccount openjdk8
+    script: cd $TRAVIS_BUILD_DIR/typed-akka-examples/ && ./sbtw "project scalaAccount" clean package run
+  - stage: test
+    jdk: openjdk8
     name: test typed-akka-examples javaHola openjdk8
     script: cd $TRAVIS_BUILD_DIR/typed-akka-examples/ && ./sbtw "project javaHola" clean test package run
   - stage: test
