@@ -1,4 +1,4 @@
-# typed akka
+# typed akka [![Build Status](https://travis-ci.org/daggerok/sbt-examples.svg?branch=master)](https://travis-ci.org/daggerok/sbt-examples)
 
 with __java__ use:
 
