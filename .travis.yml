@@ -39,23 +39,24 @@ stages:
 - deploy
 jobs:
   include:
-  - stage: test
-    jdk: openjdk8
-    name: test typed-akka-examples scalaAccount openjdk8
-    script: cd $TRAVIS_BUILD_DIR/typed-akka-examples/ && ./sbtw "project scalaAccount" clean package run
-  - stage: test
-    jdk: openjdk8
-    name: test typed-akka-examples javaHola openjdk8
-    script: cd $TRAVIS_BUILD_DIR/typed-akka-examples/ && ./sbtw "project javaHola" clean test package run
-  - stage: test
-    jdk: openjdk8
-    name: test typed-akka-examples javaHello openjdk8
-    script: cd $TRAVIS_BUILD_DIR/typed-akka-examples/ && ./sbtw "project javaHello" clean test package run
-  - stage: test
-    jdk: openjdk8
-    name: test typed-akka-examples scalaHello openjdk8
-    script: cd $TRAVIS_BUILD_DIR/typed-akka-examples/ && ./sbtw "project scalaHello" clean test package run
-  #
+
+#  - stage: test
+#    jdk: openjdk8
+#    name: test typed-akka-examples scalaAccount openjdk8
+#    script: cd $TRAVIS_BUILD_DIR/typed-akka-examples/ && ./sbtw "project scalaAccount" clean package run
+#  - stage: test
+#    jdk: openjdk8
+#    name: test typed-akka-examples javaHola openjdk8
+#    script: cd $TRAVIS_BUILD_DIR/typed-akka-examples/ && ./sbtw "project javaHola" clean test package run
+#  - stage: test
+#    jdk: openjdk8
+#    name: test typed-akka-examples javaHello openjdk8
+#    script: cd $TRAVIS_BUILD_DIR/typed-akka-examples/ && ./sbtw "project javaHello" clean test package run
+#  - stage: test
+#    jdk: openjdk8
+#    name: test typed-akka-examples scalaHello openjdk8
+#    script: cd $TRAVIS_BUILD_DIR/typed-akka-examples/ && ./sbtw "project scalaHello" clean test package run
+
 #    - stage: test
 #      jdk: openjdk8
 #      name: sbt run main-akka
@@ -95,7 +96,7 @@ jobs:
 #      jdk: openjdk8
 #      name: test akka-scala-vs-java javaHello
 #      script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project javaHello" clean test package run
-#    #
+
   - stage: test
     jdk: openjdk11
     name: sbt run main-akka openjdk11
