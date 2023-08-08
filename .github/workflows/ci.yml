@@ -10,7 +10,7 @@ on:
   pull_request:
     branches: [ master ]
 jobs:
-  sbt:
+  setup-sbt:
     if: github.event.inputs.trigger == ''
       || !startsWith(github.event.inputs.trigger, 'm')
       || !startsWith(github.event.inputs.trigger, 'M')
@@ -34,10 +34,33 @@ jobs:
           key: ${{ runner.os }}-build-${{ hashFiles('**/*.sbt', '**/pom.xml', '**/package.json', '**/package-lock.json') }}
       #- run: command -v docker >/dev/null 2>&1 || { echo >&2 "Docker is required but not installed.  Aborting."; exit 1; }
       - run: sudo apt install curl -qqy
-      - run: cd $GITHUB_WORKSPACE ; cd ./typed-akka-examples ; curl -Ls https://git.io/sbt > sbtw && chmod 0755 sbtw
+      - run: mkdir -p /tmp/proj ; cd /tmp/proj/ ; curl -Ls https://git.io/sbt > sbtw ; chmod 0755 sbtw ; ./sbtw clean compile
+  typed-akka-examples-scala-hello:
+    needs: setup-sbt
+    if: github.event.inputs.trigger == ''
+      || !startsWith(github.event.inputs.trigger, 'm')
+      || !startsWith(github.event.inputs.trigger, 'M')
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        JAVA_VERSION: [ 8, 11 ]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          # 'temurin' 'zulu' 'adopt' 'adopt-hotspot' 'adopt-openj9' 'liberica' 'microsoft'
+          distribution: 'temurin'
+          java-version: ${{ matrix.JAVA_VERSION }}
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.m2
+            ~/**/sbtw
+            ~/.docker
+          key: ${{ runner.os }}-build-${{ hashFiles('**/*.sbt', '**/pom.xml', '**/package.json', '**/package-lock.json') }}
       - run: cd $GITHUB_WORKSPACE ; cd ./typed-akka-examples ; ./sbtw "project scalaHello" clean test package run
-  typed-akka-examples-java-hola-jdk-8:
-    needs: sbt
+  typed-akka-examples-java-hola:
+    needs: setup-sbt
     if: github.event.inputs.trigger == ''
       || !startsWith(github.event.inputs.trigger, 'm')
       || !startsWith(github.event.inputs.trigger, 'M')
@@ -60,8 +83,8 @@ jobs:
             ~/.docker
           key: ${{ runner.os }}-build-${{ hashFiles('**/*.sbt', '**/pom.xml', '**/package.json', '**/package-lock.json') }}
       - run: cd $GITHUB_WORKSPACE ; cd ./typed-akka-examples ; ./sbtw "project javaHola" clean test package run
-  typed-akka-examples-java-hello-jdk-8:
-    needs: sbt
+  typed-akka-examples-java-hello:
+    needs: setup-sbt
     if: github.event.inputs.trigger == ''
       || !startsWith(github.event.inputs.trigger, 'm')
       || !startsWith(github.event.inputs.trigger, 'M')
@@ -84,8 +107,8 @@ jobs:
             ~/.docker
           key: ${{ runner.os }}-build-${{ hashFiles('**/*.sbt', '**/pom.xml', '**/package.json', '**/package-lock.json') }}
       - run: cd $GITHUB_WORKSPACE ; cd ./typed-akka-examples ; ./sbtw "project javaHello" clean test package run
-  typed-akka-examples-scala-account-jdk-8:
-    needs: sbt
+  typed-akka-examples-scala-account:
+    needs: setup-sbt
     if: github.event.inputs.trigger == ''
       || !startsWith(github.event.inputs.trigger, 'm')
       || !startsWith(github.event.inputs.trigger, 'M')
