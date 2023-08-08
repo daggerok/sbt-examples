@@ -13,9 +13,7 @@ class MainSpec(_system: ActorSystem)
   with Matchers
   with AnyWordSpecLike
   with BeforeAndAfterAll {
-
   def this() = this(ActorSystem("TypedAkkaSpec"))
-
   override def afterAll: Unit = {
     shutdown(system)
   }

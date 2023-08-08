@@ -39,23 +39,7 @@ stages:
 - deploy
 jobs:
   include:
-  - stage: test
-    jdk: openjdk8
-    name: test typed-akka-examples scalaAccount openjdk8
-    script: cd $TRAVIS_BUILD_DIR/typed-akka-examples/ && ./sbtw "project scalaAccount" clean package run
-  - stage: test
-    jdk: openjdk8
-    name: test typed-akka-examples javaHola openjdk8
-    script: cd $TRAVIS_BUILD_DIR/typed-akka-examples/ && ./sbtw "project javaHola" clean test package run
-  - stage: test
-    jdk: openjdk8
-    name: test typed-akka-examples javaHello openjdk8
-    script: cd $TRAVIS_BUILD_DIR/typed-akka-examples/ && ./sbtw "project javaHello" clean test package run
-  - stage: test
-    jdk: openjdk8
-    name: test typed-akka-examples scalaHello openjdk8
-    script: cd $TRAVIS_BUILD_DIR/typed-akka-examples/ && ./sbtw "project scalaHello" clean test package run
-  #
+
 #    - stage: test
 #      jdk: openjdk8
 #      name: sbt run main-akka
@@ -95,38 +79,38 @@ jobs:
 #      jdk: openjdk8
 #      name: test akka-scala-vs-java javaHello
 #      script: cd $TRAVIS_BUILD_DIR/akka-scala-vs-java/ && ./sbtw "project javaHello" clean test package run
-#    #
+
   - stage: test
     jdk: openjdk11
     name: sbt run main-akka openjdk11
     script: cd $TRAVIS_BUILD_DIR/main-akka/ && ./sbtw clean run
-  - stage: test
-    jdk: openjdk11
-    name: test sbt wrapper openjdk11
-    script:
-    - mkdir $TRAVIS_BUILD_DIR/test
-    - cd $TRAVIS_BUILD_DIR/test/
-    - bash $TRAVIS_BUILD_DIR/wrapper/sbt-wrapper
-    - mkdir -p src/main/scala project
-    - echo 'object Main extends App { println("Hello") }' > src/main/scala/Main.scala
-    - echo 'sbt.version=1.2.8' > project/build.properties
-    - ./sbtw compile
-    - ./sbtw clean run
-  - stage: test
-    jdk: openjdk11
-    name: test sbt wrapper openjdk11
-    script:
-    - cd $TRAVIS_BUILD_DIR/hello-world/
-    - ./sbtw package
-    - ./sbtw test
-    - ./sbtw run
-  - stage: test
-    jdk: openjdk11
-    name: test idea sbt project openjdk11
-    script:
-    - cd $TRAVIS_BUILD_DIR/hello-world/
-    - ./sbtw test
-    - ./sbtw run
+#  - stage: test
+#    jdk: openjdk11
+#    name: test sbt wrapper openjdk11
+#    script:
+#    - mkdir $TRAVIS_BUILD_DIR/test
+#    - cd $TRAVIS_BUILD_DIR/test/
+#    - bash $TRAVIS_BUILD_DIR/wrapper/sbt-wrapper
+#    - mkdir -p src/main/scala project
+#    - echo 'object Main extends App { println("Hello") }' > src/main/scala/Main.scala
+#    - echo 'sbt.version=1.2.8' > project/build.properties
+#    - ./sbtw compile
+#    - ./sbtw clean run
+#  - stage: test
+#    jdk: openjdk11
+#    name: test sbt wrapper openjdk11
+#    script:
+#    - cd $TRAVIS_BUILD_DIR/hello-world/
+#    - ./sbtw package
+#    - ./sbtw test
+#    - ./sbtw run
+#  - stage: test
+#    jdk: openjdk11
+#    name: test idea sbt project openjdk11
+#    script:
+#    - cd $TRAVIS_BUILD_DIR/hello-world/
+#    - ./sbtw test
+#    - ./sbtw run
   #
   - stage: test
     jdk: openjdk11

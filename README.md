@@ -1,5 +1,5 @@
-# sbt-examples
-Read documentation [here](https://daggerok.github.io/sbt-examples/) and learn baby, learn... GitHub Travis CI build status: [![Build Status](https://travis-ci.org/daggerok/sbt-examples.svg?branch=master)](https://travis-ci.org/daggerok/sbt-examples)
+# sbt-examples [![ci](https://github.com/daggerok/sbt-examples/actions/workflows/jdk-8.yml/badge.svg)](https://github.com/daggerok/sbt-examples/actions/workflows/jdk-8.yml)
+Read documentation [here](https://daggerok.github.io/sbt-examples/) and learn baby, learn...
 
 _table content in a reverse order_
 
